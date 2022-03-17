@@ -12,9 +12,7 @@ genedata_df[nrow(genedata_df),1393] <- "stdev"
 
 genedata_stdevs <- apply(genedata_df[,-1], 1, sd, na.rm = TRUE)
 
-genedata_sums <- rowSums(genedata_df[, 1:])
 
-head(genedata_df, 1)
 
 genedata_stdevs
 
