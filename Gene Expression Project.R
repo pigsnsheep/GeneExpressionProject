@@ -18,6 +18,13 @@ genedata_stdevs
 
 genedata_stdevs_df <- data.frame(genedata_stdevs)
 
+genedata_means <- c()
+
+index <- 2
+while (index < 19178){
+  genedata_means <- append(genedata_means, mean(as.numeric(genedata_matrix[index,]), na.rm = TRUE))
+  index <- index + 1
+}
 
 library(ggplot2)
 
@@ -25,3 +32,4 @@ install.packages("tidyverse")
 install.packages("ggplot2")
 
 ggplot(data=NULL, aes(x=genedata_stdevs)) + geom_histogram(bins = 200)
+ggplot(data=NULL, aes(x=genedata_means)) + geom_histogram(bins = 200)
