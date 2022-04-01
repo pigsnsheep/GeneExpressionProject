@@ -8,9 +8,10 @@ genedata_df2 <- t(data.frame(genedata_csv2))
 genedata_matrix <- data.matrix(genedata_df)
 genedata_means <- read.csv("Means.csv")
 genedata_stdevs <- read.csv("Standard Deviations.csv")
-genedata_genes <- genedata_df2[c(2:19178),1]
+genedata_genes <- rownames(genedata_df)
 dupes <- c()
-
+dupes[1] <- genedata_genes[1]
+dupes[1]
 for (gene in genedata_genes){
   if (is.null(dupes[gene])){
     dupes[gene] <- 1
