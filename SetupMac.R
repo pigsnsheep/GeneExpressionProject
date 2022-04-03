@@ -6,8 +6,8 @@ genedata_csv2 <- read.csv("/Users/pigsnsheep/Downloads/Gene\ Expression\ Project
 genedata_means <- read.csv("Means.csv")[2]
 genedata_stdevs <- read.csv("Standard Deviations.csv")[2]
 genedata_genes <- read.csv("Genes.csv")[2]
-kept_genes <- read.csv("Kept Genes.csv")
-kept_means <- read.csv("Kept Means.csv")
-kept_standard_deviations <- read.csv("Kept Standard Deviations.csv")
+kept_genes <- read.csv("Kept Genes.csv")[2]
+kept_means <- read.csv("Kept Means.csv")[2]
+kept_standard_deviations <- read.csv("Kept Standard Deviations.csv")[2]
 gene_scores <- genedata_means + genedata_stdevs
 
