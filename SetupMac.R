@@ -17,11 +17,24 @@ kept_drugs <- read.csv("Kept Drugs.csv")[2]
 drugdata_sds <- read.csv("DrugSds.csv")[2]
 kept_standard_deviations <- read.csv("Kept Standard Deviations.csv")[2]
 gene_scores <- genedata_means + genedata_stdevs
-kept_genes <- which(genedata_genes[,1] %in% kept_genes[,1])
-kept_drugs <- which(drugdata_drugs[,1] %in% kept_drugs[,1])
+kept_gene_indices <- which(genedata_genes[,1] %in% kept_genes[,1])
+kept_drug_indices <- which(drugdata_drugs[,1] %in% kept_drugs[,1])
 genedata_csv3 <- genedata_csv2[,kept_genes]
 drugdata_csv3 <- drugdata_csv2[c(1,kept_drugs),]
+common_cell_lines <- genedata_cell_lines[which(drugdata_cell_lines %in% genedata_cell_lines)]
+common_cell_lines_1 <- which(drugdata_cell_lines %in% genedata_cell_lines)
+common_cell_lines_2 <- which(genedata_cell_lines %in% drugdata_cell_lines)
+genedata_csv4 <- t(genedata_csv3[common_cell_lines_2,])
+drugdata_csv4 <- drugdata_csv3[,common_cell_lines_1]
+colnames(drugdata_csv3) <- colnames(genedata_csv3)
+compound_data <- rbind(genedata_csv4, drugdata_csv4)
 
-genedata_csv3[1,1]
-genedata_cell_lines <- genedata_csv3[1,]
-drugdata_cell_lines <- 
+
+
+
+substr(genedata_genes[1,1], 1, unlist(gregexpr('.', genedata_genes[1,1]))[1])
+
+unlist(gregexpr('\\.', genedata_genes[1,1]))
+
+
+gsub("\\.",",",genedata_genes[1,1])
