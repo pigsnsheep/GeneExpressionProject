@@ -1,6 +1,6 @@
 geneabridged <- function(genelist) {
   newlist <- genelist
-  genelist1 <- genelist[,1]
+  genelist1 <- genelist
   for (i in 1:length(genelist1)){
     newlist[i] <- substring(genelist1[i], 1, unlist(gregexpr('\\.', genelist1[i]))[1]-1)
   }
