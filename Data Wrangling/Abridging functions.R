@@ -1,3 +1,5 @@
+#This function removed the symbols in the genes that make them unreadable by the annotation tools.
+
 geneabridged <- function(genelist) {
   newlist <- genelist
   genelist1 <- genelist
