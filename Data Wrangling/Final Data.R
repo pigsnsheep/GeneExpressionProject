@@ -23,4 +23,3 @@ write.csv(test2, "cellannot.csv")
 
 centroids <- centroids.101[which(rownames(centroids.101) %in% rownames(genedatafinal)),]
 
-(rownames(centroids.101) %in% rownames(genedatafinal))
