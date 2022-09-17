@@ -8,10 +8,5 @@ geneabridged <- function(genelist) {
   }
   return(newlist)
 }
-
+#Testing if it worked
 genedata_genes2 <- geneabridged(genedata_genes)
-
-
-length(genedata_genes[,1])
-substr(genedata_genes[,1][1], 1, unlist(gregexpr('\\.', genedata_genes[,1][1]))[1]-1)
-length(genedata_genes[,1])
