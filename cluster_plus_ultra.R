@@ -23,13 +23,13 @@ cluster_plus_ultra<-function(mapData=NULL,
   mapData<-mapData[,order(colnames(mapData))]  #lets order things to be safe
   #create the subtypevector from the tissue annotation
   SubtypeVector<-tissueannot[-1,]
-  rownames(SubtypeVector)<-SubtypeVector[,1]
-  colnames(SubtypeVector)<-SubtypeVector[1,]
+  colnames(SubtypeVector)<-tissueannot[1,]
   SubtypeVector<-SubtypeVector[-1,]
   SubtypeVector<-SubtypeVector[,colnames(SubtypeVector) %in% c("IM_Corr","MSL_Corr","M_Corr")]
   SubtypeVector<-SubtypeVector[rownames(SubtypeVector) %in% colnames(mapData),]
   SubtypeVector<-SubtypeVector[order(rownames(SubtypeVector)),]
   therownames<-rownames(SubtypeVector)
+  SubtypeVector$IM_Corr <- lapply(SubtypeVector$IM_Corr, remove_first_decimal)
   SubtypeVector <- apply(SubtypeVector, 2,function(x) as.numeric(as.character(x)))
   rownames(SubtypeVector)<-therownames
   
@@ -39,7 +39,7 @@ cluster_plus_ultra<-function(mapData=NULL,
   #mapData <- rbind(mapData, t(SubtypeVector))
   if (scale.genes) { mapData <- t(scale(t(mapData)))}
   
-  #SubtypeVector <- t(mapData[(nrow(mapData)-2):nrow(mapData),])
+  SubtypeVector <- t(mapData[(nrow(mapData)-2):nrow(mapData),])
   #
   #mapData <- mapData[1:(nrow(mapData)-3), ]
   
@@ -258,8 +258,8 @@ cluster_plus_ultra<-function(mapData=NULL,
     for(annotation_count in 1:(ncol(geneannot)-2)){ #don't grab the last column, which is used for ordering
       #don't grab the last column, which is used for ordering
       #identify top set to limit annotation, if needed
-      if(!is.numeric(geneannot[,annotation_count+1]) && length(unique(geneannot[,annotation_count+1]))>35){
-        topannots<-data.frame(sort(table(geneannot[,annotation_count+1]),decreasing=TRUE)[1:35])
+      if(!is.numeric(geneannot[,annotation_count+1]) && length(unique(geneannot[,annotation_count+1]))>25){
+        topannots<-data.frame(sort(table(geneannot[,annotation_count+1]),decreasing=TRUE)[1:25])
         is.na(geneannot[,annotation_count+1]) <- !(geneannot[,annotation_count+1] %in% topannots$Var1)
       }
       #then make the colors
@@ -330,6 +330,9 @@ cluster_plus_ultra<-function(mapData=NULL,
   tissueannot<-tissueannot[-1,]
   colnames(tissueannot)<-tissueannot[1,]
   tissueannot<-tissueannot[-1,]
+  write.csv(tissueannot, "test123.csv")
+  write.csv(mdtemp, 'test1234.csv')
+  tissueannot$sampleid <- rownames(tissueannot)
   tissueannot <-merge(x = tissueannot, y = mdtemp, by = "sampleid", all.y=TRUE)
   tissueannot<-tissueannot[order(tissueannot$order_id),]
   tissueannot<-as.data.frame(tissueannot)
@@ -343,10 +346,11 @@ cluster_plus_ultra<-function(mapData=NULL,
   
   annotcolors<-vector(mode = "list", length = ncol(tissueannot)-1)
   chastatement<-"colAnn <- HeatmapAnnotation( which = 'col',"
-  colstatement<-"col=list("
+  colstatement<-"col=list(type = c("
   
-  for(annotation_count in 1:(ncol(tissueannot)-2)){ #don't grab the last column, which is used for ordering
-    #identify top set to limit annotation, if needed
+#  for(annotation_count in 1:(ncol(tissueannot)-2)){ #don't grab the last column, which is used for ordering
+  for(annotation_count in 1:2){ #don't grab the last column, which is used for ordering
+  #identify top set to limit annotation, if needed
     if(!is.numeric(tissueannot[,annotation_count+1]) && length(unique(tissueannot[,annotation_count+1]))>35){
       topannots<-data.frame(sort(table(tissueannot[,annotation_count+1]),decreasing=TRUE)[1:35])
       is.na(tissueannot[,annotation_count+1]) <- !(tissueannot[,annotation_count+1] %in% topannots$Var1)
@@ -394,16 +398,24 @@ cluster_plus_ultra<-function(mapData=NULL,
     
     #decide whether its a factor or not
     if(!is.numeric(tissueannot[,annotation_count+1])) {
-      chastatement<-paste(chastatement,paste0(colnames(tissueannot)[annotation_count+1]," = factor(tissueannot[,",annotation_count+1,"]),"),sep=" ")}
+      colstatement<-paste(colstatement,paste0(colnames(tissueannot)[annotation_count+1]," = factor(tissueannot[,",annotation_count+1,"]),"),sep=" ")}
     if(is.numeric(tissueannot[,annotation_count+1])) {
-      chastatement<-paste(chastatement,paste0(colnames(tissueannot)[annotation_count+1]," = tissueannot[,",annotation_count+1,"],"),sep=" ")}
+      colstatement<-paste(colstatement,paste0("tissueannot[,",annotation_count+1,"] = ", colnames(tissueannot)[annotation_count+1],", "),sep=" ")}
     
-    colstatement<-paste(colstatement,paste0(colnames(tissueannot)[annotation_count+1]," = annotcolors[[",annotation_count,"]],"),sep=" ")
+    colstatement<-paste(colstatement,paste0("annotcolors[[",annotation_count,"]] = ", colnames(tissueannot)[annotation_count+1], ", "),sep=" ")
   }
   colstatement<-substr(colstatement,1,nchar(colstatement)-1) #remove the last comma from colstatement
   colstatement<-paste0(colstatement,"), na_col = 'white')")
-  chastatement<-paste(chastatement,colstatement,sep=" ")
-  eval(parse(text=chastatement))
+  chastatement<-paste(chastatement,colstatement,")",sep=" ")
+  print(chastatement)
+  
+  print(md2)
+  print(tissueannot)
+  
+  #XXX: Testing eval(parse(text=chastatement))
+  colAnn <- HeatmapAnnotation( 
+    df = md2$mappingData, 
+    na_col = 'white')
   
   #and now lets create the plot object, if called for
   clusterplot<-NULL
@@ -416,8 +428,8 @@ cluster_plus_ultra<-function(mapData=NULL,
       show_column_names = FALSE,
       cluster_columns = FALSE,
       cluster_rows = FALSE,
-      #top_annotation= NULL,
-      top_annotation=colAnn,
+      top_annotation= NULL,
+      #top_annotation=colAnn,
       right_annotation = rHa1,
       #right_annotation = NULL,
       row_split = factor(c(rep("IM", md2$row.size[1]),
