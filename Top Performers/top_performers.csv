@@ -1,0 +1,7 @@
+"","drug","drug_name","gene","MoA","panther_protein","panther_family","gene_of_interest","correlation"
+"1","K79584249","CGM097","EDA2R",NA,"ubiquitin-protein ligase",NA,NA,"0.596946097971142"
+"2","K62627508","idasanutlin","EDA2R",NA,"ubiquitin-protein ligase",NA,NA,"0.62188202074166"
+"3","K64925568","AMG-232","EDA2R",NA,"ubiquitin-protein ligase",NA,NA,"0.596843490675595"
+"4","K79584249","CGM097","EDA2R",NA,"ubiquitin-protein ligase",NA,NA,"0.596946097971142"
+"5","K62627508","idasanutlin","EDA2R",NA,"ubiquitin-protein ligase",NA,NA,"0.62188202074166"
+"6","K64925568","AMG-232","EDA2R",NA,"ubiquitin-protein ligase",NA,NA,"0.596843490675595"
