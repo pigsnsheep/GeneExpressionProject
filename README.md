@@ -15,3 +15,4 @@ This folder contains code to generate the heatmaps, as well as a few examples.
 
 This folder contains the code used to distinguish the top perfomers.
 
+Unfortunately, I was unable to load the original data as it was too large, but all data was downloaded from depmap.org/portal.
