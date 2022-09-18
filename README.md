@@ -1,7 +1,7 @@
 # GeneExpressionProject
 
 
-This is intended for people who have read the abstract and/or the report, so they have the necessary context.
+This is intended for people who have read the abstract, so they have the necessary context.
 
 ## Data Wrangling
 
